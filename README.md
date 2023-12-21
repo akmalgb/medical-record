@@ -1,6 +1,8 @@
-after clone
+# medical-record api
 
 ```shell
+git clone https://github.com/akmalgb/medical-record.git
+cd medical-record
 mvn clean install
 ```
 
