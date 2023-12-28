@@ -1,8 +1,0 @@
-
-r	java:S117:"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ğ®”¯úÿÿÿÿ8¹ËüäÈ1
-«
-java:S4449="ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8–ÜØåÈ1
-«
-java:S4449%"ˆAnnotate the parameter with @javax.annotation.Nullable in constructor declaration, or make sure that null can not be passed as argument.(¾ûô¾üÿÿÿÿ8Áå¢æÈ1
-[
-java:S1128"9Remove this unused import 'org.example.util.ApiResponse'.(©ìÁ”ıÿÿÿÿ8ªÃ£æÈ1
