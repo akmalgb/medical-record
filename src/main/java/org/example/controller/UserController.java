@@ -1,9 +1,10 @@
 package org.example.controller;
 
+import org.example.dto.ResponseDto;
 import org.example.dto.UserDto;
 import org.example.model.User;
 import org.example.repository.UserRepository;
-import org.example.util.ApiResponse;
+import org.example.util.ResponseUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,58 +24,57 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<User>> getAllUsers() {
+    public ResponseEntity<ResponseDto<List<User>>> getAllUsers() {
         try {
-
             List<User> users = new ArrayList<>(userRepository.findAll());
 
             if (users.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                return ResponseUtil.notFound();
             }
 
-            return new ResponseEntity<>(users, HttpStatus.OK);
+            return ResponseUtil.success(HttpStatus.OK.value(), "data found", users);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseUtil.internalServerError();
         }
     }
 
     @GetMapping("/show/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable("id") long id) {
+    public ResponseEntity<ResponseDto<User>> getUserById(@PathVariable("id") long id) {
         Optional<User> userData = userRepository.findById(id);
 
         if (userData.isPresent()) {
-            return new ResponseEntity<>(userData.get(), HttpStatus.OK);
+            return ResponseUtil.success(HttpStatus.OK.value(), "success", userData.get());
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseUtil.notFound();
         }
     }
 
     @PostMapping("/store")
-    public ResponseEntity<User> createTutorial(@RequestBody UserDto req) {
+    public ResponseEntity<ResponseDto<User>> createUser(@RequestBody UserDto req) {
         try {
             User user  = new User();
             user.setName(req.getName());
             user.setUsername(req.getUsername());
             User _user = userRepository.save(user);
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
+            return ResponseUtil.success(HttpStatus.CREATED.value(), "data created", _user);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseUtil.internalServerError();
         }
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<User> deleteTutorial(@PathVariable("id") long id) {
+    public ResponseEntity<ResponseDto<User>> deleteUser(@PathVariable("id") long id) {
         try {
             Optional<User> userData = userRepository.findById(id);
             if (userData.isPresent()) {
                 var user = userData.get();
                 userRepository.deleteById(id);
-                return new ResponseEntity<>(user, HttpStatus.OK);
+                return ResponseUtil.success(HttpStatus.OK.value(), "data deleted", user);
             } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                return ResponseUtil.notFound();
             }
         } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseUtil.internalServerError();
         }
     }
 }
