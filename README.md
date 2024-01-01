@@ -26,32 +26,32 @@ http://localhost:8080/api/users/store
 ```
 ```
 {
-    "nik": "string",
-	"name": "string",
-    "username": "string",
-    "address": "string",
-    "dob": "string",
-    "weight": integer,
-    "height": integer,
-    "isHasInsurance": boolean,
-    "insuranceCarrier": "string",
-    "policyNumber": "string",
-    "emergencyContactNumber": "string",
-    "emergencyContactName": "string",
-    "medicalConditions": [
-        {
-            "doctorName": "string",
-            "speciality": "string",
-            "phone": "string",
-            "notes": "string"
-        },
-        {
-            "doctorName": "string",
-            "speciality": "string",
-            "phone": "string",
-            "notes": "string"
-        }
-    ]
+  "nik": "string",
+  "name": "string",
+  "username": "string",
+  "address": "string",
+  "dob": "string",
+  "weight": integer,
+  "height": integer,
+  "isHasInsurance": boolean,
+  "insuranceCarrier": "string",
+  "policyNumber": "string",
+  "emergencyContactNumber": "string",
+  "emergencyContactName": "string",
+  "medicalConditions": [
+    {
+      "doctorName": "string",
+      "speciality": "string",
+      "phone": "string",
+      "notes": "string"
+    },
+    {
+      "doctorName": "string",
+      "speciality": "string",
+      "phone": "string",
+      "notes": "string"
+    }
+  ]
 }
 ```
 
