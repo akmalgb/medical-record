@@ -10,6 +10,7 @@ public class ResponseUtil {
     public static <T> ResponseEntity<ResponseDto<T>> success(int statusCode, String message, T result) {
         ResponseDto<T> response = new ResponseDto<>();
         response.setStatus(statusCode);
+        response.setSuccess(true);
         response.setMessage(message);
         response.setResult(result);
         return ResponseEntity.status(statusCode).body(response);
@@ -18,6 +19,7 @@ public class ResponseUtil {
     public static <T> ResponseEntity<ResponseDto<T>> notFound() {
         ResponseDto<T> response = new ResponseDto<>();
         response.setStatus(HttpStatus.NOT_FOUND.value());
+        response.setSuccess(false);
         response.setMessage("data not found");
         response.setResult(null);
         return ResponseEntity.status(HttpStatus.NOT_FOUND.value()).body(response);
