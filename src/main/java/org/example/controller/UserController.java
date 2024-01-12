@@ -110,4 +110,21 @@ public class UserController {
             return ResponseUtil.internalServerError();
         }
     }
+
+    @GetMapping("/show-nik/{nik}")
+    public ResponseEntity<ResponseDto<User>> getUserByNik(@PathVariable("nik") String nik) {
+        try {
+            // Assuming 'nik' is a unique identifier in your User entity
+            Optional<User> userData = userRepository.findByNik(nik);
+
+            if (userData.isPresent()) {
+                var user = userData.get();
+                return ResponseUtil.success(HttpStatus.OK.value(), "User data retrieved", user);
+            } else {
+                return ResponseUtil.notFound();
+            }
+        } catch (Exception e) {
+            return ResponseUtil.internalServerError();
+        }
+    }
 }
