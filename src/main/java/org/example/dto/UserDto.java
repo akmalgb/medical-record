@@ -24,6 +24,7 @@ public class UserDto {
     private String emergencyContactNumber;
     private String emergencyContactName;
     private List<MedicalConditionDto> medicalConditions;
+    private List<Object> allergies;
 
     @Data
     @Builder

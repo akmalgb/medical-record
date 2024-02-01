@@ -1,5 +1,8 @@
 package org.example.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.dto.ResponseDto;
 import org.example.dto.UserDto;
 import org.example.model.MedicalCondition;
@@ -39,6 +42,16 @@ public class UserController {
             List<UserDto> users =
                     listUsers.stream()
                             .map(data -> {
+                                String jsonAllergies = data.getAllergies();
+                                ObjectMapper om = new ObjectMapper();
+
+                                List<Object> yourObjectList;
+                                try {
+                                    yourObjectList = om.readValue(jsonAllergies, new TypeReference<List<Object>>() {});
+                                } catch (JsonProcessingException e) {
+                                    throw new RuntimeException(e);
+                                }
+
                                 List<UserDto.MedicalConditionDto> medicalConditions =
                                         data.getMedicalConditions()
                                                 .stream()
@@ -67,6 +80,7 @@ public class UserController {
                                         .emergencyContactNumber(data.getEmergencyContactNumber())
                                         .emergencyContactName(data.getEmergencyContactName())
                                         .medicalConditions(medicalConditions)
+                                        .allergies(yourObjectList)
                                         .build();
                             })
                             .toList();

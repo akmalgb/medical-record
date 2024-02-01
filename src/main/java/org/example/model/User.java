@@ -58,6 +58,9 @@ public class User {
     @Column(name = "emergency_contact_name")
     private String emergencyContactName;
 
+    @Column(name = "allergies")
+    private String allergies;
+
     @OneToMany(mappedBy = "user")
     private List<MedicalCondition> medicalConditions;
 }
