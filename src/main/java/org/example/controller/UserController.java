@@ -32,17 +32,52 @@ public class UserController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ResponseDto<List<User>>> getAllUsers() {
+    public ResponseEntity<List<UserDto>> getAllUsers() {
         try {
-            List<User> users = new ArrayList<>(userRepository.findAll());
+            var listUsers = userRepository.findAll();
+
+            List<UserDto> users =
+                    listUsers.stream()
+                            .map(data -> {
+                                List<UserDto.MedicalConditionDto> medicalConditions =
+                                        data.getMedicalConditions()
+                                                .stream()
+                                                .map(medicalCondition
+                                                        -> UserDto.MedicalConditionDto.builder()
+                                                        .id(medicalCondition.getId())
+                                                        .doctorName(medicalCondition.getDoctorName())
+                                                        .speciality(medicalCondition.getSpeciality())
+                                                        .phone(medicalCondition.getPhone())
+                                                        .notes(medicalCondition.getNotes())
+                                                        .build())
+                                                .toList();
+
+                                return UserDto.builder()
+                                        .id(data.getId())
+                                        .nik(data.getNik())
+                                        .name(data.getName())
+                                        .username(data.getUsername())
+                                        .address(data.getAddress())
+                                        .dob(String.valueOf(data.getDob()))
+                                        .weight(data.getWeight())
+                                        .height(data.getHeight())
+                                        .isHasInsurance(data.getIsHasInsurance())
+                                        .insuranceCarrier(data.getInsuranceCarrier())
+                                        .policyNumber(data.getPolicyNumber())
+                                        .emergencyContactNumber(data.getEmergencyContactNumber())
+                                        .emergencyContactName(data.getEmergencyContactName())
+                                        .medicalConditions(medicalConditions)
+                                        .build();
+                            })
+                            .toList();
 
             if (users.isEmpty()) {
-                return ResponseUtil.notFound();
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
 
-            return ResponseUtil.success(HttpStatus.OK.value(), "data found", users);
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
-            return ResponseUtil.internalServerError();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
@@ -60,7 +95,7 @@ public class UserController {
     @PostMapping("/store")
     public ResponseEntity<ResponseDto<User>> createUser(@RequestBody UserDto req) {
         try {
-            User user  = new User();
+            User user = new User();
             user.setNik(req.getNik());
             user.setName(req.getName());
             user.setUsername(req.getUsername());
